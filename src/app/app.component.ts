@@ -13,7 +13,6 @@ import { LinkRecord, SnipService } from './snip.service';
 export class AppComponent {
   private snip = inject(SnipService);
 
-  readonly title = 'Snip';
   urlInput = '';
   readonly links = signal<LinkRecord[]>([]);
   readonly error = signal<string | null>(null);
