@@ -2,7 +2,8 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "cli": {
-    "packageManager": "npm"
+    "packageManager": "npm",
+    "analytics": "acbc0546-d420-45d4-bc2c-c32d070d4e55"
   },
   "newProjectRoot": "projects",
   "projects": {
@@ -16,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/snip-frontend/browser",
+            "outputPath": "dist/snip-frontend",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
