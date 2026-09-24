@@ -1,0 +1,112 @@
+<div class="page-shell">
+  <header class="topbar">
+    <div class="topbar__inner">
+      <div class="brand" aria-label="Snip home">
+        <span class="brand__mark">S</span>
+        <span class="brand__text">Snip</span>
+      </div>
+
+      <nav class="nav" aria-label="Main navigation">
+        <a href="#features">Features</a>
+        <a href="#links">Links</a>
+        <a href="#api">API</a>
+      </nav>
+
+      <a class="nav__action" href="#create">Get started</a>
+    </div>
+  </header>
+
+  <main class="main-panel">
+    <section class="hero" id="create">
+      <div class="hero__glow" aria-hidden="true"></div>
+      <div class="hero__content">
+        <p class="eyebrow">short links, smarter sharing</p>
+        <h1>Turn long URLs into crisp, memorable links.</h1>
+        <p class="subhead">
+          Snip helps you publish cleaner links, track performance, and keep every share focused.
+        </p>
+
+        <form class="composer" (ngSubmit)="onSubmit()">
+          <label class="sr-only" for="url-input">Paste a long URL</label>
+          <input
+            id="url-input"
+            type="url"
+            [ngModel]="urlInput"
+            (ngModelChange)="urlInput = $event"
+            name="url"
+            placeholder="https://example.com/very/long/link"
+            autocomplete="off"
+          />
+          <button type="submit" [disabled]="loading()">
+            {{ loading() ? 'Shortening…' : 'Shorten URL' }}
+          </button>
+        </form>
+
+        <div class="status" *ngIf="error() || successMessage() || successUrl()">
+          <p class="status__error" *ngIf="error()">{{ error() }}</p>
+          <p class="status__success" *ngIf="successMessage() && successUrl()">
+            <strong>{{ successMessage() }}:</strong>
+            <a [href]="successUrl()" target="_blank" rel="noreferrer">{{ successUrl() }}</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="feature-grid" id="features">
+      <article class="feature-card feature-card--dark">
+        <p class="feature-card__eyebrow">Fast setup</p>
+        <h2>Ship clean links in seconds.</h2>
+        <p>Paste any valid https URL and Snip creates a short, shareable destination instantly.</p>
+      </article>
+
+      <article class="feature-card feature-card--light">
+        <p class="feature-card__eyebrow">Reliable tracking</p>
+        <h2>Know what’s getting attention.</h2>
+        <p>Every short link keeps a hit count so you can see which links are performing.</p>
+      </article>
+    </section>
+
+    <section class="links-panel" id="links">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow eyebrow--small">recent links</p>
+          <h2>Shared links</h2>
+        </div>
+      </div>
+
+      <div class="table-wrap" *ngIf="links().length; else emptyState">
+        <table>
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Original</th>
+              <th>Hits</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let link of links()">
+              <td>
+                <a [href]="link.shortUrl" target="_blank" rel="noreferrer">{{ link.code }}</a>
+              </td>
+              <td class="link-url" [title]="link.url">{{ link.url }}</td>
+              <td>{{ link.hits }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <ng-template #emptyState>
+        <div class="empty-state">
+          <p>No links yet. Drop in a URL above to create the first share.</p>
+        </div>
+      </ng-template>
+    </section>
+
+    <section class="api-strip" id="api">
+      <p>API contract</p>
+      <code>POST /api/links</code>
+      <code>GET /api/links</code>
+      <code>GET /:code</code>
+    </section>
+  </main>
+</div>
