@@ -1,0 +1,34 @@
+name: Build bundle
+
+# This workflow runs from main. Source branch pushes do not trigger it because
+# this workflow file is not present on those branches.
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: '0 * * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-bundle
+  cancel-in-progress: true
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          submodules: true
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Rebuild and publish bundle
+        run: node scripts/build-bundle.mjs --push
